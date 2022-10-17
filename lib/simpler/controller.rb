@@ -9,6 +9,7 @@ module Simpler
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
+      build_params(env)
     end
 
     def make_response(action)
@@ -23,6 +24,11 @@ module Simpler
     end
 
     private
+
+    def build_params(env)
+      array = env['REQUEST_PATH'].split("/")
+      @request.params[:id] = array[2].to_i if array[2].to_i
+    end
 
     def extract_name
       self.class.name.match('(?<name>.+)Controller')[:name].downcase
