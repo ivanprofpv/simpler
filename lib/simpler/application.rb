@@ -26,12 +26,13 @@ module Simpler
       @router.instance_eval(&block)
     end
 
-    def call(env)
+    def call(env, logger)
+      @logger = logger
       route = @router.route_for(env)
       return default_response unless route 
-      controller = route.controller.new(env)
+      controller = route.controller.new(env, logger)
       action = route.action
-
+      @logger.info("Handler: " + controller.class.to_s + "#" + action.to_s)
       make_response(controller, action)
     end
 
