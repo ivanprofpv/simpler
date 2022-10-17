@@ -2,7 +2,8 @@ class TestsController < Simpler::Controller
 
   def index
     @time = Time.now
-    render plain: "Plain text response"
+    headers['Content-Type'] = 'text/plain'
+    #render plain: "Plain text response"
     status 201
   end
 
